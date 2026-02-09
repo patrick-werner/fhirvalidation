@@ -2,8 +2,6 @@ package com.fgu.fhir.validation;
 
 import java.io.IOException;
 
-import org.apache.jena.base.Sys;
-import org.checkerframework.checker.units.qual.m;
 import org.hl7.fhir.common.hapi.validation.support.CommonCodeSystemsTerminologyService;
 import org.hl7.fhir.common.hapi.validation.support.InMemoryTerminologyServerValidationSupport;
 import org.hl7.fhir.common.hapi.validation.support.NpmPackageValidationSupport;
@@ -13,6 +11,7 @@ import org.hl7.fhir.common.hapi.validation.validator.FhirInstanceValidator;
 import ca.uhn.fhir.context.FhirContext;
 import ca.uhn.fhir.context.support.DefaultProfileValidationSupport;
 import ca.uhn.fhir.validation.FhirValidator;
+import org.hl7.fhir.r4.model.Bundle;
 
 public class Main {
     public static final String bundle ="""
@@ -277,7 +276,7 @@ public class Main {
                     }
                 ],
                 "status": "active",
-                "intent": "order",
+                "intent": "order22",
                 "medicationReference": {
                     "reference": "urn:uuid:469e1c84-0c1c-4b9c-aaa6-72c352e0e799"
                 },
@@ -326,7 +325,7 @@ public class Main {
             }
         }
     ]
-}            
+}
             """;
 
     public static void main(String[] args) throws IOException {
@@ -346,7 +345,8 @@ public class Main {
         FhirInstanceValidator instanceValidator = new FhirInstanceValidator(validationSupportChain);
         validator.registerValidatorModule(instanceValidator);
         instanceValidator.setAnyExtensionsAllowed(true);
-        validator.validateWithResult(bundle).getMessages().forEach(m ->{ 
+//        Bundle parsedBundle = ctx.newJsonParser().parseResource(Bundle.class, bundle);
+        validator.validateWithResult(bundle).getMessages().forEach(m ->{
             System.out.println(m.getLocationString()); 
             System.out.println(m.getSeverity()); 
             System.out.println(m.getMessage());
